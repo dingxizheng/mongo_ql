@@ -20,13 +20,16 @@ Order.all.mongo_ql do
           :customer_id => _id,
           :as          => customers
 
+  join    Shipping, :as => shippings do
+    match  order_id == doc._id, status == :shipped
+  end
 
   match   province == "ON"
 
   project :_id, 
           :total, 
-          :customer => customers.name,
-          :tax      => total * tax_rate
+          :customer  => customers.name,
+          :tax       => total * tax_rate
 
   group   customer, 
           :total     => total.sum,
@@ -40,6 +43,20 @@ Order.collection.pipeline([
     localField:   "$customer_id",
     foreignField: "$_id",
     as:           "customers"
+  }},
+  { "$unwind":  {
+    path:         "customers"
+  }},
+  { "$lookup":  {
+    from:         "shippings",
+    as:           "shippings",
+    let:          { doc_id: "$_id" },
+    pipeline:     [{
+      "$match": {
+        order_id: { "$eq": "$$dock_id" },
+        status: :shipped  
+      }
+    }]
   }},
   { "$unwind":  {
     path:         "customers"
