@@ -21,7 +21,8 @@ Order.all.mongo_ql do
           :as          => customers
 
   join    Shipping, :as => shippings do
-    match  order_id == doc._id, status == :shipped
+    match  order_id == doc._id, 
+           status   == :shipped
   end
 
   match   province == "ON"
