@@ -11,5 +11,9 @@ module MongoQL
     def method_missing(method_name, *args, &block)
       Expression::FieldNode.new("#{field_name}.#{method_name}")
     end
+
+    def to_ast
+      "$#{field_name}"
+    end
   end
 end

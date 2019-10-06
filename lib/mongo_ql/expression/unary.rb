@@ -6,7 +6,11 @@ module MongoQL
 
     def initialize(operator, right)
       @operator   = operator
-      @right_node = right
+      @right_node = to_expression(right)
+    end
+
+    def to_ast
+      { operator => right_node.to_ast }
     end
   end
 end

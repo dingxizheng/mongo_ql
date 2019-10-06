@@ -23,9 +23,16 @@ module MongoQL
       "!": "$not"
     }.freeze
 
+    def to_ast
+      raise NotImplementedError, "#{self.class.name} must implement to_ast"
+    end
+
+    def to_expression(val)
+      if val.is_a?(Expression)
+        val
+      else
+        Expression::ValueNode.new(val)
+      end
+    end
   end
 end
-
-# Expression.register_method(:date_to_string, "$dataToString") do |format: nil, timezone: nil, default: nil|
-#   Expression::MethodCall.new(f, options: {})
-# end
