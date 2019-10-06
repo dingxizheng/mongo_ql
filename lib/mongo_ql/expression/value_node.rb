@@ -9,7 +9,7 @@ module MongoQL
     end
 
     def to_ast
-      val
+      value
     end
   end
 end

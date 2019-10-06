@@ -2,12 +2,16 @@
 
 module MongoQL
   class Expression::MethodCall < Expression
-    attr_accessor :target, :method, :args
+    attr_accessor :method, :target, :args
 
-    def initialize(target, method, **args)
-      @target   = target
+    def initialize(method, target, **args)
+      @target   = to_expression(target)
       @method   = method
       @args     = args
+    end
+
+    def to_ast
+      { method => target.to_ast }
     end
   end
 end
