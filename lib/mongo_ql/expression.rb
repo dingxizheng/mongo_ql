@@ -24,6 +24,7 @@ module MongoQL
     }.freeze
 
     def self.register_method(method_name, operator, &block)
+      
     end
 
     BINARY_OPS.keys.each do |op|
