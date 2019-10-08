@@ -24,7 +24,42 @@ module MongoQL
     }.freeze
 
     def self.register_method(method_name, operator, &block)
-      
+    end
+
+    def filter(&block)
+      Expression::MethodCall.new "$filter", self, ast_template: -> (target, **_args) {
+        {
+          "$filter" => {
+            "input" => target,
+            "as"    => "item",
+            "cond"  => block.call(Expression::FieldNode.new("$item")).to_ast
+          }
+        }
+      }
+    end
+
+    def map(&block)
+      Expression::MethodCall.new "$map", self, ast_template: -> (target, **_args) {
+        {
+          "$map" => {
+            "input" => target,
+            "as"    => "item",
+            "in"    => block.call(Expression::FieldNode.new("$item")).to_ast
+          }
+        }
+      }
+    end
+
+    def reduce(initial_value, &block)
+      Expression::MethodCall.new "$reduce", self, ast_template: -> (target, **_args) {
+        {
+          "$reduce" => {
+            "input"        => target,
+            "initialValue" => to_expression(initial_value).to_ast,
+            "in"           => to_expression(block.call(Expression::FieldNode.new("$value"), Expression::FieldNode.new("$this"))).to_ast
+          }
+        }
+      }
     end
 
     BINARY_OPS.keys.each do |op|
