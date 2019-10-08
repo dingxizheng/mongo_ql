@@ -13,7 +13,7 @@ module MongoQL
 
     def to_ast
       if ast_template
-        ast_template.call(target.to_ast, **args)
+        { method => ast_template.call(target.to_ast, **args) }
       else
         { method => target.to_ast }
       end
