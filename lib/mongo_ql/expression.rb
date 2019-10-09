@@ -10,16 +10,6 @@ module MongoQL
     include UnaryOperators
     include CollectionOperators
 
-    AGGREGATE_OPS = {
-      "max":   "$max",
-      "min":   "$min",
-      "first": "$first",
-      "last":  "$last",
-      "sum":   "$sum",
-      "avg":   "$avg",
-      "size":  "$size"
-    }.freeze
-
     FORMATING_OPS = {
       "to_object_id": "$toObjectId",
       "to_id":        "$toObjectId",
@@ -41,24 +31,12 @@ module MongoQL
       Expression::MethodCall.new "$type", self
     end
 
-    AGGREGATE_OPS.keys.each do |op|
-      class_eval <<~RUBY
-        def #{op}
-          Expression::MethodCall.new(AGGREGATE_OPS[__method__], self)
-        end
-      RUBY
-    end
-
     FORMATING_OPS.keys.each do |op|
       class_eval <<~RUBY
         def #{op}
           Expression::MethodCall.new(FORMATING_OPS[__method__], self)
         end
       RUBY
-    end
-
-    def to_date
-      Expression::MethodCall.new("$toDate", self)
     end
 
     def to_ast

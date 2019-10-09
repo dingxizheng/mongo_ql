@@ -2,6 +2,24 @@
 
 module MongoQL
   module CollectionOperators
+    AGGREGATE_OPS = {
+      "max":   "$max",
+      "min":   "$min",
+      "first": "$first",
+      "last":  "$last",
+      "sum":   "$sum",
+      "avg":   "$avg",
+      "size":  "$size"
+    }.freeze
+
+    AGGREGATE_OPS.keys.each do |op|
+      class_eval <<~RUBY
+        def #{op}
+          Expression::MethodCall.new(AGGREGATE_OPS[__method__], self)
+        end
+      RUBY
+    end
+
     def filter(&block)
       Expression::MethodCall.new "$filter", self, ast_template: -> (target, **_args) {
         {
