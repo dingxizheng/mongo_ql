@@ -3,12 +3,14 @@
 require_relative "binary_operators"
 require_relative "unary_operators"
 require_relative "collection_operators"
+require_relative "string_operators"
 
 module MongoQL
   class Expression
     include BinaryOperators
     include UnaryOperators
     include CollectionOperators
+    include StringOperators
 
     FORMATING_OPS = {
       "to_object_id": "$toObjectId",
@@ -27,16 +29,27 @@ module MongoQL
       "to_upper":     "$toUpper"
     }.freeze
 
-    def type
-      Expression::MethodCall.new "$type", self
-    end
-
     FORMATING_OPS.keys.each do |op|
       class_eval <<~RUBY
         def #{op}
           Expression::MethodCall.new(FORMATING_OPS[__method__], self)
         end
       RUBY
+    end
+
+    def type
+      Expression::MethodCall.new "$type", self
+    end
+
+    def if_null(default_val)
+      Expression::MethodCall.new "$ifNull", self, ast_template: -> (target, **_args) {
+        [target, to_expression(default_val).to_ast]
+      }
+    end
+    alias_method :default, :if_null
+
+    def as_date
+      Expression::DateNode.new(self)
     end
 
     def to_ast

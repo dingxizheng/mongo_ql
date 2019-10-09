@@ -9,7 +9,8 @@ module MongoQL
       "last":  "$last",
       "sum":   "$sum",
       "avg":   "$avg",
-      "size":  "$size"
+      "size":  "$size",
+      "push":  "$push"
     }.freeze
 
     AGGREGATE_OPS.keys.each do |op|
@@ -49,5 +50,15 @@ module MongoQL
         }
       }
     end
+
+    def contains(ele)
+      Expression::MethodCall.new "$in", self, ast_template: -> (target, **_args) {
+        [to_expression(ele).to_ast, target]
+      }
+    end
+    alias_method :includes, :contains
+    alias_method :include,  :contains
+    alias_method :include?, :contains
+
   end
 end
