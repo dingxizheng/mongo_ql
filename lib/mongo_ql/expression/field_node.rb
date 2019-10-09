@@ -12,6 +12,10 @@ module MongoQL
       Expression::FieldNode.new("#{field_name}.#{method_name}")
     end
 
+    def f(field)
+      Expression::FieldNode.new("#{field_name}.#{field}")
+    end
+
     def to_ast
       "$#{field_name}"
     end

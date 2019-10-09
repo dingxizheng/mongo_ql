@@ -3,19 +3,19 @@
 module MongoQL
   class Expression
     BINARY_OPS = {
-      "+": "$add",
-      "-": "$subtract",
-      "*": "$multiply",
-      "/": "$divide",
-      ">": "$gt",
-      "<": "$lt",
+      "+":  "$add",
+      "-":  "$subtract",
+      "*":  "$multiply",
+      "/":  "$divide",
+      ">":  "$gt",
+      "<":  "$lt",
       ">=": "$gte",
       "<=": "$lte",
       "!=": "$ne",
       "==": "$eq",
-      "&": "$and",
-      "|": "$or",
-      "%": "$mod",
+      "&":  "$and",
+      "|":  "$or",
+      "%":  "$mod",
       "**": "$pow"
     }.freeze
 
@@ -23,8 +23,32 @@ module MongoQL
       "!": "$not"
     }.freeze
 
-    def self.register_method(method_name, operator, &block)
-    end
+    AGGREGATE_OPS = {
+      "max":   "$max",
+      "min":   "$min",
+      "first": "$first",
+      "last":  "$last",
+      "sum":   "$sum",
+      "avg":   "$avg",
+      "size":  "$size"
+    }.freeze
+
+    FORMATING_OPS = {
+      "to_object_id": "$toObjectId",
+      "to_id":        "$toObjectId",
+      "to_s":         "$toString",
+      "to_string":    "$toString",
+      "to_int":       "$toInt",
+      "to_long":      "$toLong",
+      "to_bool":      "$toBool",
+      "to_date":      "$toDate",
+      "to_decimal":   "$toDecimal",
+      "to_double":    "$toDouble",
+      "downcase":     "$toLower",
+      "to_lower":     "$toLower",
+      "upcase":       "$toUpper",
+      "to_upper":     "$toUpper"
+    }.freeze
 
     def filter(&block)
       Expression::MethodCall.new "$filter", self, ast_template: -> (target, **_args) {
@@ -56,6 +80,10 @@ module MongoQL
       }
     end
 
+    def type
+      Expression::MethodCall.new "$type", self
+    end
+
     BINARY_OPS.keys.each do |op|
       class_eval <<~RUBY
         def #{op}(right_node)
@@ -68,6 +96,22 @@ module MongoQL
       class_eval <<~RUBY
         def #{op}
           Expression::Unary.new(UNARY_OPS[__method__], self)
+        end
+      RUBY
+    end
+
+    AGGREGATE_OPS.keys.each do |op|
+      class_eval <<~RUBY
+        def #{op}
+          Expression::MethodCall.new(AGGREGATE_OPS[__method__], self)
+        end
+      RUBY
+    end
+
+    FORMATING_OPS.keys.each do |op|
+      class_eval <<~RUBY
+        def #{op}
+          Expression::MethodCall.new(FORMATING_OPS[__method__], self)
         end
       RUBY
     end
@@ -90,21 +134,3 @@ module MongoQL
       end
   end
 end
-
-# Expression.register_method(:to_date, op: "$toDate") do |method, target, **args|
-#   { input => target }
-# end
-
-# Expression.register_method(:map, op: "$toDate") do |method, target, **args|
-#   { input => target }
-# end
-
-# items.map { this + 1 }
-
-# val([ 1, 2, 3, 4 ]).reduce({ sum: 5, product: 2 }) do |product, item|
-#   { sum: item.sum }
-# end
-
-# User.mongo_ql do
-#   group name => user.name.first
-# end

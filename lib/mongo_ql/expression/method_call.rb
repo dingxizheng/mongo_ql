@@ -4,7 +4,7 @@ module MongoQL
   class Expression::MethodCall < Expression
     attr_accessor :method, :target, :ast_template, :args
 
-    def initialize(method, target, ast_template:, **args)
+    def initialize(method, target, ast_template: nil, **args)
       @target       = to_expression(target)
       @method       = method
       @ast_template = ast_template
