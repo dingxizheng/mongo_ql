@@ -16,9 +16,9 @@ Order.where { total  >= If(currency == "CAD", 100, 80) }
 # Aggregation Pipeline DSL
 ```ruby
 Order.all.mongo_ql do
-  join    Customer, 
-          :customer_id => _id,
-          :as          => customers
+  join    Customer,
+          on: customer_id == _id.to_id, 
+          as: customers
 
   join    Shipping, :as => shippings do
     match  order_id == doc._id, 
@@ -26,7 +26,7 @@ Order.all.mongo_ql do
   end
 
   match   province == "ON"
-
+  
   project :_id, 
           :total, 
           :customer  => customers.name,

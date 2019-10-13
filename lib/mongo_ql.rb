@@ -11,3 +11,7 @@ require_relative "mongo_ql/expression/value_node"
 require_relative "mongo_ql/expression/method_call"
 require_relative "mongo_ql/expression/binary"
 require_relative "mongo_ql/expression/unary"
+
+require_relative "mongo_ql/stage"
+require_relative "mongo_ql/stage/lookup"
+require_relative "mongo_ql/stage/match"

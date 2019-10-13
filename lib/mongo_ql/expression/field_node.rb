@@ -19,5 +19,13 @@ module MongoQL
     def to_ast
       "$#{field_name}"
     end
+
+    def to_s
+      field_name.to_s
+    end
+
+    def name
+      field_name.to_s
+    end
   end
 end
