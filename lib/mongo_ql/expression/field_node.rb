@@ -27,5 +27,13 @@ module MongoQL
     def name
       field_name.to_s
     end
+
+    def dsc
+      Expression::Descend.new(self)
+    end
+
+    def asc
+      Expression::Ascend.new(self)
+    end
   end
 end
