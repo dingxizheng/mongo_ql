@@ -45,6 +45,12 @@ module MongoQL
       Expression::FieldNode.new(m)
     end
 
+    def first_of(*field_expressions)
+      field_expressions.map do |expr|
+        [expr, expr.first]
+      end.to_h
+    end
+
     def f(name)
       Expression::FieldNode.new(name)
     end
@@ -54,7 +60,16 @@ module MongoQL
     end
 
     def to_ast
-      pipeline.map(&:to_ast)
+      stages = pipeline.map(&:to_ast)
+      stages.map do |stage|
+        stage.deep_transform_values do |v|
+          v.is_a?(Expression) ? v.to_ast : v
+        end
+      end
+    end
+
+    %w(where match project select sort flatten unwind lookup join).each do |m|
+      alias_method :"#{m.capitalize}", m
     end
   end
 end

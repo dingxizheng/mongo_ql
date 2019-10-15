@@ -23,7 +23,7 @@ module MongoQL
       end
 
       def set(name, val)
-        vars["var_#{name}"] = val
+        vars["var_#{name.to_s[0..-2]}"] = val
       end
 
       private

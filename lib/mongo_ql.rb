@@ -1,8 +1,36 @@
 # frozen_string_literal: true
 
 require "active_support/core_ext/hash"
-
+require "logger"
 module MongoQL
+  class InvalidVariableAccess < StandardError; end
+
+  def self.compose(*variable_names, &block)
+    block_binding = block.binding
+    ctx = MongoQL::StageContext.new
+
+    variables = variable_names.map do |name|
+      [name, block_binding.local_variable_get(name)]
+    end.to_h
+
+    # Update injected local variables to ValueNode expressions
+    variable_names.each do |name|
+      block_binding.local_variable_set(name, Expression::ValueNode.new(variables[name]))
+    end
+
+    ctx.instance_exec(*variables, &block)
+
+    # Restore local variables
+    variable_names.each do |name|
+      block_binding.local_variable_set(name, variables[name])
+    end
+
+    ctx
+  end
+
+  def self.logger
+    @logger ||= Logger.new($stdout)
+  end
 end
 
 require_relative "mongo_ql/version"
