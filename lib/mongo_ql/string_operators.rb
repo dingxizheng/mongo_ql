@@ -16,5 +16,11 @@ module MongoQL
         }
       }
     end
+
+    def concat(*expressions)
+      Expression::MethodCall.new "$concat", self, ast_template: -> (target, **_args) {
+        [target, *expressions.map { |e| to_expression(e) }.map(&:to_ast)]
+      }
+    end
   end
 end

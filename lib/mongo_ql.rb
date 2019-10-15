@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "active_support/core_ext/hash"
+
 module MongoQL
 end
 
@@ -14,6 +16,7 @@ require_relative "mongo_ql/expression/unary"
 
 require_relative "mongo_ql/expression/descend"
 require_relative "mongo_ql/expression/ascend"
+require_relative "mongo_ql/expression/projection"
 
 require_relative "mongo_ql/stage"
 require_relative "mongo_ql/stage/project"

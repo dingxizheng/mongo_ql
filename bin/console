@@ -8,5 +8,11 @@ define_singleton_method(:method_missing) do |m, *args, &block|
   MongoQL::Expression::FieldNode.new(m)
 end
 
+define_singleton_method(:aggregate) do |&block|
+  ctx = MongoQL::StageContext.new
+  ctx.instance_exec &block
+  ctx
+end
+
 require "irb"
 IRB.start

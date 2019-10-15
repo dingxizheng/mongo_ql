@@ -35,6 +35,11 @@ Order.all.mongo_ql do
   group   customer, 
           :total     => total.sum,
           :total_tax => tax.sum * 5
+
+  sort_by age.desc
+
+  page 1
+  per  10
 end
 
 # The above aggregation is equivalent to the following mognodb pipeline
