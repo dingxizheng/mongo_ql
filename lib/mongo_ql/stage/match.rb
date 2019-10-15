@@ -23,7 +23,7 @@ module MongoQL
     private
       def conditions_ast
         if conditions.size > 1
-          { "$and": conditions.map(&:to_ast) }
+          { "$and" => conditions.map(&:to_ast) }
         elsif conditions.size == 1
           conditions[0].to_ast
         else
