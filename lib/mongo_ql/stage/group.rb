@@ -13,7 +13,7 @@ module MongoQL
 
     def to_ast
       {
-        "$group": {
+        "$group" => {
           "_id" => by.to_ast,
         }.merge(fields.transform_values(&EXPRESSION_TO_AST_MAPPER))
       }
