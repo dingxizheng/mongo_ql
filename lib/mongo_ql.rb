@@ -15,6 +15,7 @@ unless {}.respond_to?(:deep_transform_values)
     end
   end
 end
+
 module MongoQL
   class InvalidVariableAccess < StandardError; end
 
@@ -66,5 +67,6 @@ require_relative "mongo_ql/stage/match"
 require_relative "mongo_ql/stage/group"
 require_relative "mongo_ql/stage/unwind"
 require_relative "mongo_ql/stage/sort"
+require_relative "mongo_ql/stage/add_fields"
 
 require_relative "mongo_ql/stage_context"

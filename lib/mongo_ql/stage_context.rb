@@ -14,7 +14,7 @@ module MongoQL
     alias_method :match, :where
 
     def add_fields(*args)
-      raise NotImplementedError, "add_fields is not implemented"
+      pipeline << Stage::AddFields.new(*args)
     end
 
     def project(*fields)
