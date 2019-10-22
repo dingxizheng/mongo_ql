@@ -20,26 +20,23 @@ Order.all.mongo_ql do
           on: customer_id == _id.to_id, 
           as: customers
 
-  join    Shipping, :as => shippings do
+  join    Shipping, :as => shippings do |doc|
     match  order_id == doc._id, 
            status   == :shipped
   end
 
   match   province == "ON"
   
-  project :_id, 
-          :total, 
-          :customer  => customers.name,
-          :tax       => total * tax_rate
+  project _id, 
+          total, 
+          customer  => customers.name,
+          tax       => total * tax_rate
 
   group   customer, 
-          :total     => total.sum,
-          :total_tax => tax.sum * 5
+          total     => total.sum,
+          total_tax => tax.sum * 5
 
   sort_by age.desc
-
-  page 1
-  per  10
 end
 
 # The above aggregation is equivalent to the following mognodb pipeline
