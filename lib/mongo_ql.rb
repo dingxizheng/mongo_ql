@@ -3,18 +3,7 @@
 require "active_support"
 require "active_support/core_ext/hash"
 require "logger"
-
-
-unless {}.respond_to?(:deep_transform_values)
-  class Hash
-    def deep_transform_values(&block)
-      reduce({}) do |result, (k, v)|
-        result[k] = v.is_a?(Hash) ? v.deep_transform_values(&block) : yield(v)
-        result
-      end
-    end
-  end
-end
+require_relative "mongo_ql/monkey_patch"
 
 module MongoQL
   class InvalidVariableAccess < StandardError; end
