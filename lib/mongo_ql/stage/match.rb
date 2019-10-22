@@ -6,7 +6,7 @@ module MongoQL
 
     def initialize(*conds, **field_filters)
       conds.each do |c|
-        raise ArgumentError, "#{c.inspect} is not a MongoQL::Expression" unless c.is_a?(MongoQL::Expression)
+        raise ArgumentError, "#{c.inspect} is not a valid MongoQL::Expression" unless c.is_a?(MongoQL::Expression)
       end
       @conditions    = conds
       @field_filters = field_filters

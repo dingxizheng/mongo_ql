@@ -6,7 +6,9 @@ require "logger"
 require_relative "mongo_ql/monkey_patch"
 
 module MongoQL
-  class InvalidVariableAccess < StandardError; end
+  class MongoQLError < RuntimeError; end
+  class InvalidVariableAccess < MongoQLError; end
+  class InvalidValueExpression < MongoQLError; end
 
   def self.compose(*variable_names, &block)
     block_binding = block.binding

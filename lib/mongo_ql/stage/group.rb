@@ -15,7 +15,7 @@ module MongoQL
       {
         "$group" => {
           "_id" => by.to_ast,
-        }.merge(fields.transform_values(&EXPRESSION_TO_AST_MAPPER))
+        }.merge(fields.deep_transform_values(&EXPRESSION_TO_AST_MAPPER))
       }
     end
   end

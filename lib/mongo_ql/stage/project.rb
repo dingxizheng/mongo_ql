@@ -10,7 +10,7 @@ module MongoQL
                               when String, Symbol, Expression::FieldNode
                                 { field.to_s => 1 }
                               when Hash
-                                field.map { |k, v| [k.to_s, to_expression(v).to_ast] }.to_h
+                                field.map { |k, v| [k.to_s, to_expression(v)] }.to_h
                               else
                                 raise ArgumentError, "#{field} is not a valid field mapping option"
                               end
@@ -20,14 +20,5 @@ module MongoQL
     def to_ast
       { "$project" => field_projections }
     end
-
-    protected
-      def to_expression(val)
-        if val.is_a?(Expression)
-          val
-        else
-          Expression::ValueNode.new(val)
-        end
-      end
   end
 end
