@@ -25,13 +25,13 @@ module MongoQL
     end
 
     ctx.instance_exec(*variables, &block)
+    ctx
 
+  ensure
     # Restore local variables
     variable_names.each do |name|
       block_binding.local_variable_set(name, variables[name])
     end
-
-    ctx
   end
 
   def self.logger

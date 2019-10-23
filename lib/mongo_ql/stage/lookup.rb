@@ -39,12 +39,11 @@ module MongoQL
       @ctx       = ctx
       @from      = collection_name(from)
       @as        = new_array_name(as)
-
       @nested_pipeline_block = block
-      @nested_pipeline       = eval_nested_pipeline
 
       if has_nested_pipeline?
         @let_vars = NestedPipelineVars.new
+        @nested_pipeline = eval_nested_pipeline
       else
         @condition = condition_ast(condition || on)
       end
