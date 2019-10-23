@@ -32,12 +32,16 @@ module MongoQL
         end
     end
 
-    attr_accessor :from, :condition, :as, :nested_pipeline_block, :let_vars
+    attr_accessor :ctx, :from, :condition, :as,
+      :nested_pipeline_block, :let_vars, :nested_pipeline
 
-    def initialize(from, condition = nil, on: nil, as: nil, &block)
+    def initialize(ctx, from, condition = nil, on: nil, as: nil, &block)
+      @ctx       = ctx
       @from      = collection_name(from)
       @as        = new_array_name(as)
+
       @nested_pipeline_block = block
+      @nested_pipeline       = eval_nested_pipeline
 
       if has_nested_pipeline?
         @let_vars = NestedPipelineVars.new
@@ -62,7 +66,7 @@ module MongoQL
         condition.nil? && !nested_pipeline_block.nil?
       end
 
-      def nested_pipeline
+      def eval_nested_pipeline
         sub_ctx = StageContext.new
         sub_ctx.instance_exec(let_vars, &nested_pipeline_block)
         sub_ctx

@@ -2,9 +2,11 @@
 
 module MongoQL
   class Stage::AddFields < Stage
+    attr_accessor :ctx
     attr_accessor :field_projections
 
-    def initialize(*fields)
+    def initialize(ctx, *fields)
+      @ctx = ctx
       @field_projections = fields.map do |field|
                               case field
                               when Hash

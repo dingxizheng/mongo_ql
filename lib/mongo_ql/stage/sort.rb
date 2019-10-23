@@ -2,9 +2,10 @@
 
 module MongoQL
   class Stage::Sort < Stage
-    attr_accessor :fields
+    attr_accessor :ctx, :fields
 
-    def initialize(*fields)
+    def initialize(ctx, *fields)
+      @ctx = ctx
       @fields = fields.map do |field|
         case field
         when Expression::FieldNode

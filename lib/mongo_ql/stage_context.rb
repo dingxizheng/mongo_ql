@@ -2,42 +2,43 @@
 
 module MongoQL
   class StageContext
-    attr_accessor :pipeline
+    attr_accessor :pipeline, :injected_vars
 
     def initialize
       @pipeline = []
+      @injected_vars = {}
     end
 
     def where(*args)
-      pipeline << Stage::Match.new(*args)
+      pipeline << Stage::Match.new(self, *args)
     end
     alias_method :match, :where
 
     def add_fields(*args)
-      pipeline << Stage::AddFields.new(*args)
+      pipeline << Stage::AddFields.new(self, *args)
     end
 
     def project(*fields)
-      pipeline << Stage::Project.new(*fields)
+      pipeline << Stage::Project.new(self, *fields)
     end
     alias_method :select, :project
 
     def lookup(*args, &block)
-      pipeline << Stage::Lookup.new(*args, &block)
+      pipeline << Stage::Lookup.new(self, *args, &block)
     end
     alias_method :join, :lookup
 
     def group(*args)
-      pipeline << Stage::Group.new(*args)
+      pipeline << Stage::Group.new(self, *args)
     end
 
     def unwind(*args)
-      pipeline << Stage::Unwind.new(*args)
+      pipeline << Stage::Unwind.new(self, *args)
     end
     alias_method :flatten, :unwind
 
     def sort(*args)
-      pipeline << Stage::Sort.new(*args)
+      pipeline << Stage::Sort.new(self, *args)
     end
     alias_method :sort_by, :sort
 

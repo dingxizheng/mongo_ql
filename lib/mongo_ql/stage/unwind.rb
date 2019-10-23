@@ -2,9 +2,10 @@
 
 module MongoQL
   class Stage::Unwind < Stage
-    attr_accessor :path, :allow_null
+    attr_accessor :ctx, :path, :allow_null
 
-    def initialize(path, allow_null: false)
+    def initialize(ctx, path, allow_null: false)
+      @ctx        = ctx
       @path       = to_expression(path)
       @allow_null = allow_null
     end

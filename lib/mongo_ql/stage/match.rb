@@ -2,9 +2,10 @@
 
 module MongoQL
   class Stage::Match < Stage
-    attr_accessor :conditions, :field_filters
+    attr_accessor :ctx, :conditions, :field_filters
 
-    def initialize(*conds, **field_filters)
+    def initialize(ctx, *conds, **field_filters)
+      @ctx = ctx
       conds.each do |c|
         raise ArgumentError, "#{c.inspect} is not a valid MongoQL::Expression" unless c.is_a?(MongoQL::Expression)
       end

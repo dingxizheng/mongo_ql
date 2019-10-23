@@ -22,31 +22,34 @@ module MongoQL
     end
 
     def filter(&block)
+      evaled_cond = block.call(Expression::FieldNode.new("$item"))
       Expression::MethodCall.new "$filter", self, ast_template: -> (target, **_args) {
         {
           "input" => target,
           "as"    => "item",
-          "cond"  => block.call(Expression::FieldNode.new("$item")).to_ast
+          "cond"  => evaled_cond.to_ast
         }
       }
     end
 
     def map(&block)
+      evaled_in = block.call(Expression::FieldNode.new("$item"))
       Expression::MethodCall.new "$map", self, ast_template: -> (target, **_args) {
         {
           "input" => target,
           "as"    => "item",
-          "in"    => block.call(Expression::FieldNode.new("$item")).to_ast
+          "in"    => evaled_in.to_ast
         }
       }
     end
 
     def reduce(initial_value, &block)
+      evaled_in = to_expression(block.call(Expression::FieldNode.new("$value"), Expression::FieldNode.new("$this")))
       Expression::MethodCall.new "$reduce", self, ast_template: -> (target, **_args) {
         {
           "input"        => target,
           "initialValue" => to_expression(initial_value).to_ast,
-          "in"           => to_expression(block.call(Expression::FieldNode.new("$value"), Expression::FieldNode.new("$this"))).to_ast
+          "in"           => evaled_in.to_ast
         }
       }
     end

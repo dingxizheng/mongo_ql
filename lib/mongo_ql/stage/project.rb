@@ -2,9 +2,10 @@
 
 module MongoQL
   class Stage::Project < Stage
-    attr_accessor :field_projections
+    attr_accessor :ctx, :field_projections
 
-    def initialize(*fields)
+    def initialize(ctx, *fields)
+      @ctx = ctx
       @field_projections = fields.map do |field|
                               case field
                               when String, Symbol, Expression::FieldNode

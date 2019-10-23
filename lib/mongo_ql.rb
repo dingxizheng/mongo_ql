@@ -20,7 +20,8 @@ module MongoQL
 
     # Update injected local variables to ValueNode expressions
     variable_names.each do |name|
-      block_binding.local_variable_set(name, Expression::ValueNode.new(variables[name]))
+      ctx.injected_vars[name] = Expression::ValueNode.new(variables[name])
+      block_binding.local_variable_set(name, ctx.injected_vars[name])
     end
 
     ctx.instance_exec(*variables, &block)

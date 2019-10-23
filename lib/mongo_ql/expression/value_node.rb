@@ -5,7 +5,8 @@ module MongoQL
     SUPPORTED_TYPES = [
       String, Integer, Float,
       Array, Hash, TrueClass,
-      FalseClass, Date, Symbol
+      FalseClass, Date, Symbol,
+      MongoQL::Expression::ValueNode
     ].freeze
 
     attr_accessor :value
