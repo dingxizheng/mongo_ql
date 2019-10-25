@@ -61,12 +61,7 @@ module MongoQL
     end
 
     def to_ast
-      stages = pipeline.map(&:to_ast)
-      stages.map do |stage|
-        stage.deep_transform_values do |v|
-          v.is_a?(Expression) ? v.to_ast : v
-        end
-      end
+      pipeline.map(&:to_ast)
     end
 
     %w(where match project select sort flatten unwind lookup join).each do |m|

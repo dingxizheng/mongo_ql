@@ -43,7 +43,7 @@ module MongoQL
 
     def if_null(default_val)
       Expression::MethodCall.new "$ifNull", self, ast_template: -> (target, **_args) {
-        [target, to_expression(default_val).to_ast]
+        [target, to_expression(default_val)]
       }
     end
     alias_method :default, :if_null

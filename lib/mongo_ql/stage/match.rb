@@ -15,18 +15,19 @@ module MongoQL
 
     def to_ast
       conds = {}
-      if conditions_ast
-        conds["$expr"] = conditions_ast
+      if compose_conditions
+        conds["$expr"] = compose_conditions
       end
-      { "$match" => conds.merge(field_filters) }
+      ast = { "$match" => conds.merge(field_filters) }
+      MongoQL::Utils.deep_transform_values(ast, &MongoQL::EXPRESSION_TO_AST_MAPPER)
     end
 
     private
-      def conditions_ast
+      def compose_conditions
         if conditions.size > 1
-          { "$and" => conditions.map(&:to_ast) }
+          { "$and" => conditions }
         elsif conditions.size == 1
-          conditions[0].to_ast
+          conditions[0]
         else
           nil
         end

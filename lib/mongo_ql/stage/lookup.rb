@@ -52,12 +52,13 @@ module MongoQL
     def to_ast
       lookup_expr = { "from" => from, "as" => as }
       if has_nested_pipeline?
-        lookup_expr["pipeline"] = nested_pipeline.to_ast
+        lookup_expr["pipeline"] = nested_pipeline
         lookup_expr["let"]      = let_vars.vars
       else
         lookup_expr = lookup_expr.merge(condition)
       end
-      { "$lookup" => lookup_expr }
+      ast = { "$lookup" => lookup_expr }
+      MongoQL::Utils.deep_transform_values(ast, &MongoQL::EXPRESSION_TO_AST_MAPPER)
     end
 
     private

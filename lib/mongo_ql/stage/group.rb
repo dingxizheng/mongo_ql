@@ -2,8 +2,6 @@
 
 module MongoQL
   class Stage::Group < Stage
-    EXPRESSION_TO_AST_MAPPER = proc { |v| v.is_a?(Expression) ? v.to_ast : v  }
-    
     attr_accessor :ctx
     attr_accessor :by, :fields
 
@@ -14,11 +12,12 @@ module MongoQL
     end
 
     def to_ast
-      {
+      ast = {
         "$group" => {
           "_id" => by.to_ast,
-        }.merge(fields.deep_transform_values(&EXPRESSION_TO_AST_MAPPER))
+        }.merge(fields)
       }
+      MongoQL::Utils.deep_transform_values(ast, &MongoQL::EXPRESSION_TO_AST_MAPPER)
     end
   end
 end

@@ -11,7 +11,7 @@ module MongoQL
     end
 
     def to_ast
-      { operator => [left_node.to_ast, right_node.to_ast] }
+      { operator => [left_node, right_node] }
     end
   end
 end

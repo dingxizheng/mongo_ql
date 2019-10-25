@@ -19,7 +19,8 @@ module MongoQL
     end
 
     def to_ast
-      { "$project" => field_projections }
+      ast = { "$project" => field_projections }
+      MongoQL::Utils.deep_transform_values(ast, &MongoQL::EXPRESSION_TO_AST_MAPPER)
     end
   end
 end

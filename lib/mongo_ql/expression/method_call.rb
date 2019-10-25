@@ -5,17 +5,17 @@ module MongoQL
     attr_accessor :method, :target, :ast_template, :args
 
     def initialize(method, target, ast_template: nil, **args)
-      @target       = to_expression(target)
       @method       = method
-      @ast_template = ast_template
       @args         = args
+      @target       = to_expression(target)
+      @ast_template = ast_template
     end
 
     def to_ast
       if ast_template
-        { method => ast_template.call(target.to_ast, **args) }
+        { method => ast_template.call(target, **args) }
       else
-        { method => target.to_ast }
+        { method => target }
       end
     end
   end

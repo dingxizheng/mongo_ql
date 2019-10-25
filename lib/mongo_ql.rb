@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
-require "active_support"
-require "active_support/core_ext/hash"
+require "date"
 require "logger"
-require_relative "mongo_ql/monkey_patch"
-
 module MongoQL
   class MongoQLError < RuntimeError; end
   class InvalidVariableAccess < MongoQLError; end
   class InvalidValueExpression < MongoQLError; end
+
+  EXPRESSION_TO_AST_MAPPER = proc do |v|
+    case v
+    when Expression, Stage, StageContext
+      v.to_ast
+    else
+      v
+    end
+  end
 
   def self.compose(*variable_names, &block)
     block_binding = block.binding
@@ -40,6 +46,7 @@ module MongoQL
 end
 
 require_relative "mongo_ql/version"
+require_relative "mongo_ql/utils"
 require_relative "mongo_ql/expression"
 require_relative "mongo_ql/expression/date_note"
 require_relative "mongo_ql/expression/field_node"

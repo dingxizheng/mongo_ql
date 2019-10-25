@@ -27,7 +27,7 @@ module MongoQL
         {
           "input" => target,
           "as"    => "item",
-          "cond"  => evaled_cond.to_ast
+          "cond"  => evaled_cond
         }
       }
     end
@@ -38,7 +38,7 @@ module MongoQL
         {
           "input" => target,
           "as"    => "item",
-          "in"    => evaled_in.to_ast
+          "in"    => evaled_in
         }
       }
     end
@@ -48,20 +48,21 @@ module MongoQL
       Expression::MethodCall.new "$reduce", self, ast_template: -> (target, **_args) {
         {
           "input"        => target,
-          "initialValue" => to_expression(initial_value).to_ast,
-          "in"           => evaled_in.to_ast
+          "initialValue" => to_expression(initial_value),
+          "in"           => evaled_in
         }
       }
     end
 
     def contains(ele)
       Expression::MethodCall.new "$in", self, ast_template: -> (target, **_args) {
-        [to_expression(ele).to_ast, target]
+        [to_expression(ele), target]
       }
     end
     alias_method :includes, :contains
     alias_method :include,  :contains
     alias_method :include?, :contains
+    alias_method :includes?, :contains
 
   end
 end

@@ -11,12 +11,13 @@ module MongoQL
     end
 
     def to_ast
-      {
+      ast = {
         "$unwind" => {
-          "path" => path.to_ast,
+          "path" => path,
           "preserveNullAndEmptyArrays" => allow_null
         }
       }
+      MongoQL::Utils.deep_transform_values(ast, &MongoQL::EXPRESSION_TO_AST_MAPPER)
     end
   end
 end
