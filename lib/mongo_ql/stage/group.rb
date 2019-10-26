@@ -14,7 +14,7 @@ module MongoQL
     def to_ast
       ast = {
         "$group" => {
-          "_id" => by.to_ast,
+          "_id" => by,
         }.merge(fields)
       }
       MongoQL::Utils.deep_transform_values(ast, &MongoQL::EXPRESSION_TO_AST_MAPPER)
