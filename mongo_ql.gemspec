@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Xizheng Ding"]
   spec.email         = ["dingxizheng@gamil.com"]
 
-  spec.summary       = "A DSL for building mongo query in a more natual way"
+  spec.summary       = "A DSL for building MongoDB query in a more natual way"
   spec.homepage      = "https://github.com/dingxizheng/mongo_ql"
   spec.license       = "MIT"
 
