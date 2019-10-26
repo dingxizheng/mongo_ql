@@ -22,7 +22,7 @@ MongoQL.compose do
           total     => total.sum,
           total_tax => tax.sum * 5
 
-  sort_by age.desc
+  sort_by age.dsc
 end
 ```
 
@@ -87,7 +87,7 @@ end
   }
 }, {
   "$sort": {
-    "age.desc": 1
+    "age": -1
   }
 }]
 ```

@@ -17,7 +17,7 @@ module MongoQL
     end
 
     def to_ast
-      value.is_a?(MongoQL::Expression::ValueNode) ? value.to_ast : v
+      value.is_a?(MongoQL::Expression::ValueNode) ? value.to_ast : value
     end
 
     def self.valid?(value)

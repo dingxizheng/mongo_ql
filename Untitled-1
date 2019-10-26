@@ -1,4 +1,0 @@
-include MongoQL
-define_singleton_method(:method_missing) do |m, *args, &block|
-  MongoQL::Expression::FieldNode.new(m)
-end

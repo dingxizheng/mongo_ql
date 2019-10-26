@@ -10,7 +10,7 @@ class TestMontoQL < Minitest::Test
       {"$match"   => {"$expr" => {"$eq" => ["$province", "ON"]}}},
       {"$project" => {"_id" => 1, "total" => 1, "customer" => "customers", "tax" => {"$multiply" => ["$total", "$tax_rate"]}}},
       {"$group"   => {"_id" => "$customer", "total" => {"$sum" => "$total"}, "total_tax" => {"$multiply" => [{"$sum" => "$tax"}, 5]}}},
-      {"$sort"    => {"age.desc" => 1}}
+      {"$sort"    => {"age" => -1}}
     ]
   end
 
@@ -36,7 +36,7 @@ class TestMontoQL < Minitest::Test
               total     => total.sum,
               total_tax => tax.sum * 5
 
-      sort_by age.desc
+      sort_by age.dsc
     end
 
     assert_equal pipeline.to_ast, @result_pipeline
