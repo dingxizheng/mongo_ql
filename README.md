@@ -3,16 +3,16 @@
 # Aggregation Pipeline DSL
 ```ruby
 MongoQL.compose do
-  join    customers,
+  lookup  customers,
           on: customer_id == _id.to_id, 
           as: customers
 
-  join    shippings, :as => shippings do |doc|
+  lookup  shippings, :as => shippings do |doc|
     match  order_id == doc._id, 
            status   == :shipped
   end
 
-  match   province == "ON"
+  flatten province == "ON"
   
   project :_id, 
           total, 
@@ -23,7 +23,7 @@ MongoQL.compose do
           total     => total.sum,
           total_tax => tax.sum * 5
 
-  sort_by age.dsc
+  sort    age.dsc
 end
 ```
 
