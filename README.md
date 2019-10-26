@@ -1,8 +1,21 @@
+# MongoQL
 [![Gem](https://img.shields.io/gem/v/mongo_ql.svg?style=flat)](http://rubygems.org/gems/mongo_ql "View this project in Rubygems")
 [![Actions Status](https://github.com/dingxizheng/mongo_ql/workflows/Ruby/badge.svg)](https://github.com/dingxizheng/mongo_ql/actions)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
-# Aggregation Pipeline DSL
+## Installation
+Install from RubyGems by adding it to your `Gemfile`, then bundling.
+
+```ruby
+# Gemfile
+gem 'mongo_ql'
+```
+
+```
+$ bundle install
+```
+
+## Aggregation Pipeline DSL
 ```ruby
 MongoQL.compose do
   lookup  customers,
@@ -29,7 +42,7 @@ MongoQL.compose do
 end
 ```
 
-# The above aggregation is equivalent to the following mognodb pipeline
+## The above aggregation is equivalent to the following mognodb pipeline
 ```json
 [{
   "$lookup": {
