@@ -1,3 +1,4 @@
+[![Actions Status](https://github.com/dingxizheng/mongo_ql/workflows/Ruby/badge.svg)](https://github.com/dingxizheng/mongo_ql/actions)
 
 # Aggregation Pipeline DSL
 ```ruby
