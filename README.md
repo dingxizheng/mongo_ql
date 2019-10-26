@@ -12,7 +12,7 @@ MongoQL.compose do
            status   == :shipped
   end
 
-  flatten province == "ON"
+  where   province == "ON"
   
   project :_id, 
           total, 
