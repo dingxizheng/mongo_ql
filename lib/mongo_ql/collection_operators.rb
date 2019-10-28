@@ -10,7 +10,8 @@ module MongoQL
       "sum":   "$sum",
       "avg":   "$avg",
       "size":  "$size",
-      "push":  "$push"
+      "push":  "$push",
+      "reverse": "$reverseArray"
     }.freeze
 
     AGGREGATE_OPS.keys.each do |op|
@@ -70,5 +71,8 @@ module MongoQL
     alias_method :include?, :contains
     alias_method :includes?, :contains
 
+    def any?(&block)
+      filter(&block).size > 0
+    end
   end
 end
