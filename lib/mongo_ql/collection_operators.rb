@@ -72,7 +72,7 @@ module MongoQL
     alias_method :includes?, :contains
 
     def any?(&block)
-      filter(&block).size > 0
+      if_null([]).filter(&block).size > 0
     end
   end
 end

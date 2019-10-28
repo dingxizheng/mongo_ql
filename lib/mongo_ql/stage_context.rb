@@ -60,6 +60,11 @@ module MongoQL
       Expression::ValueNode.new(val)
     end
 
+    def cond(conditon_expr, then_expr = nil, else_expr = nil, &block)
+      Expression::Condition.new(conditon_expr, then_expr, else_expr, &block)
+    end
+    alias_method :If, :cond
+
     def to_ast
       pipeline.map(&:to_ast)
     end

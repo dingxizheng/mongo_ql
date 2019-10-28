@@ -52,6 +52,10 @@ module MongoQL
       Expression::DateNode.new(self)
     end
 
+    def then(then_expr = nil, &block)
+      Expression::Condition.new(self, then_expr, nil, &block)
+    end
+
     def to_ast
       raise NotImplementedError, "#{self.class.name} must implement to_ast"
     end

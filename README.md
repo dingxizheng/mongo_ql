@@ -33,7 +33,8 @@ MongoQL.compose do
   project _id, 
           total, 
           customer  => customers.name,
-          tax       => total * tax_rate
+          tax       => total * tax_rate,
+          status    => If price <= 10, "Not Bad", "Good"
 
   group   customer, 
           total     => total.sum,
