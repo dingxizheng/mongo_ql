@@ -27,9 +27,10 @@ MongoQL.compose do
            status   == :shipped
   end
 
-  where   province == "ON"
+  where   province == "ON",
+          discounts.any? { |d| d.price > 6 }
   
-  project :_id, 
+  project _id, 
           total, 
           customer  => customers.name,
           tax       => total * tax_rate
@@ -42,7 +43,7 @@ MongoQL.compose do
 end
 ```
 
-## The above aggregation is equivalent to the following mognodb pipeline
+## The above aggregation DSL generates the following MongoDB pipeline
 ```json
 [{
   "$lookup": {
