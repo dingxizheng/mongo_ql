@@ -29,7 +29,7 @@ module MongoQL
     end
 
     def convert_to_date_if_possible
-      self.value = Date.parse(value)
+      self.value = DateTime.parse(value)
     rescue => _
       value
     end
