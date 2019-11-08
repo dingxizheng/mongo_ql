@@ -14,6 +14,7 @@ module MongoQL
     def initialize(val)
       Expression::ValueNode.valid!(val)
       @value = val
+      convert_to_date_if_possible
     end
 
     def to_ast
@@ -25,6 +26,12 @@ module MongoQL
       else
         value
       end
+    end
+
+    def convert_to_date_if_possible
+      self.value = Date.parse(value)
+    rescue => _
+      value
     end
 
     def self.valid?(value)
