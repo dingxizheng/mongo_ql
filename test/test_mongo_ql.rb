@@ -4,7 +4,10 @@ require_relative "test_helper"
 
 class TestMontoQL < Minitest::Test
   def setup
+    @time_now ||= DateTime.now
     @result_pipeline = [
+      {"$match"   => {"$expr" => {"$ne" => ["$deleted_at", nil]}}},
+      {"$match"   => {"$expr" => {"$gt" => ["$created_at", { "$toDate" => DateTime.now(1573191861).iso8601 }]}}},
       {"$lookup"  => {"from" => "customers", "as" => "customers", "localField" => "customer_id", "foreignField" => {"$toString" => {"$toObjectId" => "$_id"}}}},
       {"$lookup"  => {"from" => "shippings", "as" => "shippings", "pipeline" => [{"$match" => {"$expr" => {"$and" => [{"$eq" => ["$order_id", "$$var__id"]}, {"$eq" => ["$status", :shipped]}]}}}], "let" => {"var__id" => "$_id"}}},
       {"$match"   => {"$expr" => {"$eq" => ["$province", "ON"]}}},
@@ -15,7 +18,12 @@ class TestMontoQL < Minitest::Test
   end
 
   def test_compose
+    time_now = DateTime.now(1573191861)
     pipeline = MongoQL.compose do
+      where   deleted_at != nil
+
+      where   created_at > time_now
+
       join    customers,
               on: customer_id == _id.to_id,
               as: customers
