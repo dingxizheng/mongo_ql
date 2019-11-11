@@ -81,8 +81,8 @@ module MongoQL
         else
           if from&.respond_to?(:collection)
             from&.collection&.name
-          elsif  from&.respond_to?(:name)
-            from.name
+          elsif from&.respond_to?(:field_name)
+            from.field_name
           else
             raise ArgumentError, "#{from} is not a valid collection"
           end

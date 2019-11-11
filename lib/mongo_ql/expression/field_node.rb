@@ -24,10 +24,6 @@ module MongoQL
       field_name.to_s
     end
 
-    def name
-      field_name.to_s
-    end
-
     def dsc
       Expression::Descend.new(self)
     end

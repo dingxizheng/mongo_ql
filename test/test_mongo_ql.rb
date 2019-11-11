@@ -11,7 +11,7 @@ class TestMontoQL < Minitest::Test
       {"$lookup"  => {"from" => "customers", "as" => "customers", "localField" => "customer_id", "foreignField" => {"$toString" => {"$toObjectId" => "$_id"}}}},
       {"$lookup"  => {"from" => "shippings", "as" => "shippings", "pipeline" => [{"$match" => {"$expr" => {"$and" => [{"$eq" => ["$order_id", "$$var__id"]}, {"$eq" => ["$status", :shipped]}]}}}], "let" => {"var__id" => "$_id"}}},
       {"$match"   => {"$expr" => {"$eq" => ["$province", "ON"]}}},
-      {"$project" => {"_id" => 1, "total" => 1, "customer" => "customers", "tax" => {"$multiply" => ["$total", "$tax_rate"]}}},
+      {"$project" => {"_id" => 1, "total" => 1, "customer" => "$customers.name", "tax" => {"$multiply" => ["$total", "$tax_rate"]}}},
       {"$group"   => {"_id" => "$customer", "total" => {"$sum" => "$total"}, "total_tax" => {"$multiply" => [{"$sum" => "$tax"}, 5]}}},
       {"$sort"    => {"age" => -1}}
     ]

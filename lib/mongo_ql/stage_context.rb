@@ -9,6 +9,18 @@ module MongoQL
       @injected_vars = {}
     end
 
+    def scope(mongo_scope)
+      criteria = nil
+      if mongo_scope.respond_to?(:all)
+        criteria = mongo_scope.all.selector.transform_keys { |k| k.to_sym }
+      end
+
+      if mongo_scope.is_a?(Hash)
+        criteria = mongo_scope.transform_keys { |k| k.to_sym }
+      end
+      where(**criteria) if criteria
+    end
+
     def where(*args)
       pipeline << Stage::Match.new(self, *args)
     end
@@ -69,7 +81,7 @@ module MongoQL
       pipeline.map(&:to_ast)
     end
 
-    %w(where match project select sort flatten unwind lookup join).each do |m|
+    %w(scope where match project select sort flatten unwind lookup join).each do |m|
       alias_method :"#{m.capitalize}", m
     end
   end
