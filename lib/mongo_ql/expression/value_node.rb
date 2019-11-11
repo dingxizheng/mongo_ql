@@ -20,7 +20,8 @@ module MongoQL
     def to_ast
       case value
       when Date, DateTime
-        Expression::ValueNode.new(value.iso8601).to_date.to_ast
+        # Expression::ValueNode.new(value.iso8601).to_date.to_ast
+        { "$toDate" => value.iso8601 }
       when MongoQL::Expression::ValueNode
         value.to_ast
       else
