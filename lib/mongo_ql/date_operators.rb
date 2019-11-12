@@ -21,5 +21,22 @@ module MongoQL
         end
       RUBY
     end
+
+    def format(format, timezone: nil)
+      Expression::MethodCall.new "$dateToString", self, ast_template: -> (target, **_args) {
+        if timezone
+          {
+            "format"   => format,
+            "date"     => target,
+            "timezone" => timezone
+          }
+        else
+          {
+            "format"   => format,
+            "date"     => target
+          }
+        end
+      }
+    end
   end
 end
