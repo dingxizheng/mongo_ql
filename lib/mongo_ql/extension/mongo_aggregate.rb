@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-module MongoQL
-  module MongoAggregate
+return unless defined?(Mongo::Collection)
+module Mongo
+  class Collection
+    alias_method :__old_aggregate__, :aggregate
     def aggregate(pipeline, options = {})
       expanded_pipeline = MongoQL::MacroProcessor.expand(pipeline)
-      super(expanded_pipeline, options)
+      __old_aggregate__(expanded_pipeline, options)
     end
   end
-end
-
-if defined?(Mongo::Database::View)
-  Mongo::Database::View.prepend MongoQL::MongoAggregate
 end

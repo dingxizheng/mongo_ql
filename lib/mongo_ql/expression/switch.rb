@@ -8,12 +8,12 @@ module MongoQL
       def initialize(condition, then_val = nil, **args, &block)
         @condition = condition
         @then_expr = then_val || args[:then]
-        @then_expr = yield if block_given?
+        @then_expr = yield unless block.nil?
       end
 
       def then(then_val = nil, &block)
         @then_expr = then_val
-        @then_expr = yield if block_given?
+        @then_expr = yield unless block.nil?
         self
       end
       alias_method :Then, :then
@@ -41,7 +41,7 @@ module MongoQL
 
     def default(expr = nil, &block)
       @default_expr = expr
-      @default_expr = yield if block_given?
+      @default_expr = yield unless block.nil?
     end
     alias_method :Default, :default
 
