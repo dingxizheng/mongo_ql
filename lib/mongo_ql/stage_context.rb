@@ -72,6 +72,10 @@ module MongoQL
       Expression::ValueNode.new(val)
     end
 
+    def m(name)
+      Expression::Macro.new(name.to_s)
+    end
+
     def switch(&block)
       Expression::Switch.new(self, &block)
     end

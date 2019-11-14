@@ -46,6 +46,8 @@ end
 
 require_relative "mongo_ql/version"
 require_relative "mongo_ql/utils"
+require_relative "mongo_ql/macro"
+
 require_relative "mongo_ql/expression"
 require_relative "mongo_ql/expression/date_note"
 require_relative "mongo_ql/expression/field_node"
@@ -55,6 +57,7 @@ require_relative "mongo_ql/expression/binary"
 require_relative "mongo_ql/expression/unary"
 require_relative "mongo_ql/expression/condition"
 require_relative "mongo_ql/expression/switch"
+require_relative "mongo_ql/expression/macro"
 
 require_relative "mongo_ql/expression/descend"
 require_relative "mongo_ql/expression/ascend"
@@ -70,3 +73,11 @@ require_relative "mongo_ql/stage/sort"
 require_relative "mongo_ql/stage/add_fields"
 
 require_relative "mongo_ql/stage_context"
+
+require_relative "mongo_ql/macro_processor"
+
+# Load default macros
+require_relative "mongo_ql/extension/default_macros"
+
+# Prepend macro processors to mongo driver
+require_relative "mongo_ql/extension/mongo_aggregate"

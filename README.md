@@ -23,9 +23,9 @@ MongoQL.compose do
   where   created_at > "2018-10-10"
 
   add_fields extra => switch {
-                        cond    age < 10,  then: "<10"
-                        cond    age < 20,  then: "<20"
-                        default "Unknown"
+                        If      age < 10,  then: "<10"
+                        If      age < 20,  then: "<20"
+                        Default "Unknown"
                       }
 
   join    customers,
