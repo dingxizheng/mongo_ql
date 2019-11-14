@@ -31,13 +31,11 @@ class TestMontoQL < Minitest::Test
 
       where   created_at > time_now
 
-      extra_field = switch {
-        cond    age < 10,  then: "<10"
-        cond    age < 20,  then: "<20"
-        default "Unknown"
-      }
-
-      add_fields extra => extra_field
+      add_fields extra => switch {
+                            cond    age < 10,  then: "<10"
+                            cond    age < 20,  then: "<20"
+                            default "Unknown"
+                          }
 
       join    customers,
               on: customer_id == _id.to_id,
