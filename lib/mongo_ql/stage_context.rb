@@ -72,6 +72,11 @@ module MongoQL
       Expression::ValueNode.new(val)
     end
 
+    def switch(&block)
+      Expression::Switch.new(self, &block)
+    end
+    alias_method :Switch, :switch
+
     def cond(conditon_expr, then_expr = nil, else_expr = nil, &block)
       Expression::Condition.new(conditon_expr, then_expr, else_expr, &block)
     end
