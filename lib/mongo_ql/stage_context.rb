@@ -60,6 +60,9 @@ module MongoQL
     alias_method :sort_by, :sort
 
     def method_missing(m, *args, &block)
+      if m.to_s[0] == m.to_s[0].upcase
+        raise ArgumentErrorm, "undefined method #{m}"
+      end
       Expression::FieldNode.new(m)
     end
 
@@ -95,7 +98,7 @@ module MongoQL
       pipeline.map(&:to_ast)
     end
 
-    %w(query scope where match project select sort flatten unwind lookup join).each do |m|
+    %w(query scope where match project select sort flatten unwind lookup join lookup).each do |m|
       alias_method :"#{m.capitalize}", m
     end
   end
