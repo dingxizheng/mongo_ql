@@ -21,6 +21,10 @@ module MongoQL
       where(**criteria) if criteria
     end
 
+    def query(target_collection)
+      pipeline << { "$query" => target_collection.to_s }
+    end
+
     def where(*args)
       pipeline << Stage::Match.new(self, *args)
     end
@@ -90,7 +94,7 @@ module MongoQL
       pipeline.map(&:to_ast)
     end
 
-    %w(scope where match project select sort flatten unwind lookup join).each do |m|
+    %w(query scope where match project select sort flatten unwind lookup join).each do |m|
       alias_method :"#{m.capitalize}", m
     end
   end
