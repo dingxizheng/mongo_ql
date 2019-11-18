@@ -33,6 +33,7 @@ module MongoQL
     def add_fields(*args)
       pipeline << Stage::AddFields.new(self, *args)
     end
+    alias_method :AddFields, :add_fields
 
     def project(*fields)
       pipeline << Stage::Project.new(self, *fields)
