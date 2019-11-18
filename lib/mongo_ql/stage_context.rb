@@ -22,7 +22,11 @@ module MongoQL
     end
 
     def query(target_collection)
-      pipeline << { "$query" => target_collection.to_s }
+      stage = { "$query" => target_collection.to_s }
+      stage.define_singleton_method(:to_ast) do
+        stage
+      end
+      pipeline << stage
     end
 
     def where(*args)
