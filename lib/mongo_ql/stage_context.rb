@@ -98,7 +98,7 @@ module MongoQL
       pipeline.map(&:to_ast)
     end
 
-    %w(query scope where match project select sort flatten unwind lookup join lookup).each do |m|
+    %w(query scope where match project select sort flatten unwind lookup join group).each do |m|
       alias_method :"#{m.capitalize}", m
     end
   end
