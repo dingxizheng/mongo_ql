@@ -9,19 +9,19 @@ module MongoQL
       @then_expr = then_val
       @else_expr = else_val
 
-      @then_expr = yield if block_given?
+      @then_expr = yield if !block.nil?
     end
 
     def then(then_val = nil, &block)
       @then_expr = then_val
-      @then_expr = yield if block_given?
+      @then_expr = yield if !block.nil?
       self
     end
     alias_method :Then, :then
 
     def else(else_val = nil, &block)
       @else_expr = else_val
-      @else_expr = yield if block_given?
+      @else_expr = yield if !block.nil?
       self
     end
     alias_method :Else, :else

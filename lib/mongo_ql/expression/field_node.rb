@@ -9,7 +9,7 @@ module MongoQL
     end
 
     def method_missing(method_name, *args, &block)
-      if args.size > 0 || block_given?
+      if args.size > 0 || !block.nil?
         raise NoMemoryError, "undefined method `#{method_name}' for #{self.class}"
       end
       Expression::FieldNode.new("#{field_name}.#{method_name}")
