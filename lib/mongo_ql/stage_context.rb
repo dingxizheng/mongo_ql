@@ -60,8 +60,8 @@ module MongoQL
     alias_method :sort_by, :sort
 
     def method_missing(m, *args, &block)
-      if m.to_s[0] =~ /[A-Za-z]/ && m.to_s[0] == m.to_s[0].upcase
-        raise ArgumentError, "undefined method #{m}"
+      if args.size > 0 || block_given? || (m.to_s[0] =~ /[A-Za-z]/ && m.to_s[0] == m.to_s[0].upcase)
+        raise NoMemoryError, "undefined method `#{m}' for #{self.class}"
       end
       Expression::FieldNode.new(m)
     end

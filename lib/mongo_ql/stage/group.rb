@@ -5,10 +5,24 @@ module MongoQL
     attr_accessor :ctx
     attr_accessor :by, :fields
 
-    def initialize(ctx, by, arrow_fields = {}, **fields)
+    def initialize(ctx, by, *args, **fields)
       @ctx    = ctx
       @by     = by
-      @fields = fields.transform_keys(&:to_s).merge(arrow_fields.transform_keys(&:to_s))
+
+      projection_fields = {}
+      args.each do |arg|
+        case arg
+        when String, Symbol
+          projection_fields.merge!(arg.to_s => Expression::FieldNode.new(arg).first)
+        when Expression::FieldNode
+          projection_fields.merge!(arg.to_s => arg.first)
+        when Hash
+          projection_fields.merge!(arg.transform_keys(&:to_s))
+        end
+      end
+
+      @fields = fields.transform_keys(&:to_s).merge(projection_fields)
+      # @fields = fields.transform_keys(&:to_s).merge(arrow_fields.transform_keys(&:to_s))
     end
 
     def to_ast
