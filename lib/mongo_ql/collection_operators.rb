@@ -39,6 +39,12 @@ module MongoQL
       }
     end
 
+    def combine_sets(*expressions)
+      Expression::MethodCall.new "$setUnion", self, ast_template: -> (target, **_args) {
+        [target, *expressions]
+      }
+    end
+
     def map(&block)
       evaled_in = block.call(Expression::FieldNode.new("$item"))
       Expression::MethodCall.new "$map", self, ast_template: -> (target, **_args) {
