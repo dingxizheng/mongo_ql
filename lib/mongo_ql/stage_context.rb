@@ -59,6 +59,11 @@ module MongoQL
     end
     alias_method :sort_by, :sort
 
+    def limit(*args)
+      pipeline << Stage::Limit.new(self, *args)
+    end
+    alias_method :Limit, :limit
+
     def method_missing(m, *args, &block)
       if args.size > 0 || !block.nil? || (m.to_s[0] =~ /[A-Za-z]/ && m.to_s[0] == m.to_s[0].upcase)
         raise NoMemoryError, "undefined method `#{m}' for #{self.class}"
