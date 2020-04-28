@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-return unless defined?(Mongo::Criteria)
+return unless defined?(Mongoid::Criteria)
 
 module MongoWhereExtension
   def where(*args, &block)
@@ -19,5 +19,6 @@ module MongoWhereExtension
     end
   end
 end
+
 
 Mongoid::Criteria.prepend MongoWhereExtension
