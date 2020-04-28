@@ -83,3 +83,4 @@ require_relative "mongo_ql/extension/default_macros"
 
 # Prepend macro processors to mongo driver
 require_relative "mongo_ql/extension/mongo_aggregate"
+require_relative "mongo_ql/extension/mongo_where_extension"
