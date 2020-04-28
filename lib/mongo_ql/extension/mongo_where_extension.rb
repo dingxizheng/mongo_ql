@@ -21,4 +21,4 @@ module MongoWhereExtension
 end
 
 
-Mongoid::Criteria.prepend MongoWhereExtension
+# Mongoid::Criteria.prepend MongoWhereExtension
