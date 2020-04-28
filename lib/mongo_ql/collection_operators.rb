@@ -67,6 +67,12 @@ module MongoQL
       }
     end
 
+    def [](idx)
+      Expression::MethodCall.new "$arrayElemAt", self, ast_template: -> (target, **_args) {
+        [target, idx]
+      }
+    end
+
     def contains(ele)
       Expression::MethodCall.new "$in", self, ast_template: -> (target, **_args) {
         [to_expression(ele), target]
