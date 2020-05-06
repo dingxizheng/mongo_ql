@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "date"
-require "logger"
+
 module MongoQL
   class MongoQLError < RuntimeError; end
   class InvalidVariableAccess < MongoQLError; end
@@ -40,6 +40,7 @@ module MongoQL
   end
 
   def self.logger
+    require "logger"
     @logger ||= Logger.new($stdout)
   end
 end
